@@ -2,10 +2,13 @@
 
  int main()
  {
-     auto window = sf::RenderWindow(sf::VideoMode({800, 600}), "Snake Game");
+     sf::RenderWindow window = sf::RenderWindow(sf::VideoMode({800, 600}), "Snake Game");
      window.setFramerateLimit(60);
 
-
+     sf::RectangleShape snakeHead(sf::Vector2f(20, 20));
+     snakeHead.setOrigin(10, 10);
+     snakeHead.setPosition(100, 100);
+     snakeHead.setFillColor(sf::Color::Green);
 
      while (window.isOpen())
      {
@@ -19,6 +22,7 @@
          }
 
         window.clear();
+        window.draw(snakeHead);
          window.display();
      }
  }
