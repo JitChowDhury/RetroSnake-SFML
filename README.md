@@ -1,7 +1,7 @@
 # 🐍 Snake Game (C++ & SFML)
 
 ![C++](https://img.shields.io/badge/C%2B%2B-17-blue.svg?logo=c%2B%2B&logoColor=white)
-![SFML](https://img.shields.io/badge/SFML-2.5-green.svg?logo=sfml&logoColor=white)
+![SFML](https://img.shields.io/badge/SFML-2.6-green.svg?logo=sfml&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
