@@ -11,8 +11,7 @@ private:
 	float stepSize;
 public:
 	Snake();
-	void Update(float deltaTime);
-	void Wrap(float windowWidth, float windowHeight);
+	void Update(float deltaTime, float windowWidth, float windowHeight);
 	sf::RectangleShape GetHeadShape() const;
 
 	void draw(sf::RenderWindow& draw) const;

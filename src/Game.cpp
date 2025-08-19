@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game():window(sf::VideoMode({ 800, 600 }), "Snake Game"),deltaTime(0.f)
+Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Snake Game"), deltaTime(0.f)
 {
 
     window.setFramerateLimit(60);
@@ -11,8 +11,8 @@ Game::Game():window(sf::VideoMode({ 800, 600 }), "Snake Game"),deltaTime(0.f)
 void Game::Update()
 {
     deltaTime = clock.restart().asSeconds();
-    snake.Update(deltaTime);
-    snake.Wrap(800, 600);
+    snake.Update(deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT);
+   
 }
 
 void Game::HandleEvents()

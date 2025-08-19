@@ -9,25 +9,20 @@ Snake::Snake():stepSize(20.f),moveTime(0.1f),time(0.f)
 
 }
 
-void Snake::Update(float deltaTime)
+void Snake::Update(float deltaTime, float windowWidth, float windowHeight)
 {
 	time += deltaTime;
 	if (time > moveTime)
 	{
 		snakeHead.setPosition(snakeHead.getPosition() + sf::Vector2f(1, 0)*stepSize);
-		
+		if (snakeHead.getPosition().x > windowWidth) {
+			snakeHead.setPosition(snakeHead.getSize().x / 2, snakeHead.getPosition().y);
+		}
 		time = 0.f;
 	}
-	
-	
+		
 }
-
-void Snake::Wrap(float windowWidth, float windowHeight)
-{
-	if (snakeHead.getPosition().x > windowWidth) {
-		snakeHead.setPosition(snakeHead.getSize().x / 2,snakeHead.getPosition().y) ;
-	}
-}
+	
 
 sf::RectangleShape Snake::GetHeadShape() const
 {

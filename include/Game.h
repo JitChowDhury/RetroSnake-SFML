@@ -5,6 +5,9 @@
 class Game
 {
 private:
+	const unsigned int WINDOW_WIDTH;
+	const unsigned int WINDOW_HEIGHT;
+
 	sf::RenderWindow window;
 	Snake snake;
 	sf::Clock clock;
