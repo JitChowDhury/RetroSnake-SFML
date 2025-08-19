@@ -16,12 +16,10 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)##now we've downloaded sfml and make it ready to use in my project
 
 # ✅ Define the executable
-add_executable(snake 
-    src/main.cpp 
-    # src/snake.cpp 
-    # src/food.cpp 
-    # src/game.cpp
-)
+file(GLOB SRC_FILES src/*.cpp)
+file(GLOB HEADER_FILES include/*.h)
+
+add_executable(snake ${SRC_FILES} ${HEADER_FILES})
 
 target_include_directories(snake PRIVATE include)
 target_compile_features(snake PRIVATE cxx_std_17) ##make sure its build using standard cpp 17
