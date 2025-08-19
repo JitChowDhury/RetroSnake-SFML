@@ -3,7 +3,9 @@
  int main()
  {
      auto window = sf::RenderWindow(sf::VideoMode({800, 600}), "Snake Game");
-     window.setFramerateLimit(144);
+     window.setFramerateLimit(60);
+
+
 
      while (window.isOpen())
      {
