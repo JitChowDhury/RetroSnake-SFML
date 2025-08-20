@@ -1,3 +1,4 @@
+#include<iostream>
 #include "Game.h"
 
 Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Snake Game"), deltaTime(0.f)
@@ -23,6 +24,26 @@ void Game::HandleEvents()
         if (event.type == sf::Event::Closed)
         {
             window.close();
+        }
+        else if (event.type == sf::Event::KeyPressed)
+        {
+            if (event.key.code == sf::Keyboard::W)
+            {
+                snake.SetDirection(sf::Vector2f(0.f, -1.f));
+            }
+            if (event.key.code == sf::Keyboard::S)
+            {
+                snake.SetDirection(sf::Vector2f(0.f, 1.f));
+            }
+            if (event.key.code == sf::Keyboard::A)
+            {
+                snake.SetDirection(sf::Vector2f(-1.f, 0.f));
+            }
+            if (event.key.code == sf::Keyboard::D)
+            {
+                snake.SetDirection(sf::Vector2f(1.f, 0.f));
+
+            }
         }
     }
 }
