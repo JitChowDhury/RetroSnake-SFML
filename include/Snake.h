@@ -1,8 +1,10 @@
 #include <SFML/Graphics.hpp>
+#include <vector>
 class Snake
 {
 private:
 	sf::RectangleShape snakeHead;
+	std::vector<sf::RectangleShape>body;
 	sf::Vector2f position;
 	sf::Vector2f direction;
 	float time;
@@ -13,7 +15,9 @@ private:
 public:
 	Snake();
 	void Update(float deltaTime, float windowWidth, float windowHeight);
-	sf::RectangleShape GetHeadShape() const;
 	void SetDirection(sf::Vector2f direction);
 	void draw(sf::RenderWindow& draw) const;
+	void grow();
+
+
 };

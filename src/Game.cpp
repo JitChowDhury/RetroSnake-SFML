@@ -5,6 +5,8 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
 {
 
     window.setFramerateLimit(60);
+    
+    
 }
 
 
@@ -44,6 +46,10 @@ void Game::HandleEvents()
                 snake.SetDirection(sf::Vector2f(1.f, 0.f));
 
             }
+            if (event.key.code == sf::Keyboard::Space)
+            {
+                snake.grow();
+            }
         }
     }
 }
@@ -52,6 +58,7 @@ void Game::Render()
 {
 
     window.clear();
+    food.Draw(window);
     snake.draw(window);
     window.display();
 }

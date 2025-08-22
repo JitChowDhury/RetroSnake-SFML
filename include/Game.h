@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Snake.h"
+#include "Food.h"
 
 class Game
 {
@@ -12,6 +13,7 @@ private:
 	Snake snake;
 	sf::Clock clock;
 	float deltaTime;
+	Food food;
 
 
 	void Update();
