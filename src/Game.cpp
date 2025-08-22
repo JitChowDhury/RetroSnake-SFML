@@ -1,11 +1,42 @@
 #include<iostream>
 #include "Game.h"
+#include <filesystem>
 
-Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Snake Game"), deltaTime(0.f)
+
+
+Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Snake Game"), deltaTime(0.f),score(0),retries(0),maxRetry(100)
 {
 
     window.setFramerateLimit(60);
+    food.SetRandomPosition(WINDOW_WIDTH, WINDOW_HEIGHT);
     
+ 
+
+    do {
+        food.SetRandomPosition(WINDOW_WIDTH, WINDOW_HEIGHT);
+        retries++;
+        if (retries >= maxRetry)
+        {
+            food.SetRandomPosition(200.f, 200.f);
+            break;
+        }
+    } while (isPositionOnSnake(food.getShape().getPosition(), snake));
+
+    if (!font.loadFromFile("assets/Fonts/arial.ttf"))
+    {
+        std::filesystem::path cwd = std::filesystem::current_path();
+        std::cout << "Current working directory: " << cwd << "\n";
+        std::cout << "Failed to load file" << std::endl;
+        
+
+    }
+    scoreText.setFont(font);
+    scoreText.setCharacterSize(24);
+    scoreText.setFillColor(sf::Color::White);
+    scoreText.setPosition(10.f, 10.f);
+    scoreText.setString("Score: 0");
+
+
     
 }
 
@@ -15,6 +46,21 @@ void Game::Update()
 {
     deltaTime = clock.restart().asSeconds();
     snake.Update(deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT);
+    if (snake.GetGlobalBounds().intersects(food.GetGlobalBounds()))
+    {
+        snake.grow();
+        score += 1;
+        scoreText.setString("Score: " + std::to_string(score));
+        retries = 0;
+        do {
+            food.SetRandomPosition(WINDOW_WIDTH, WINDOW_HEIGHT);
+            retries++;
+            if (retries >= maxRetry) {
+                food.SetRandomPosition(200.f, 200.f); // Fallback
+                break;
+            }
+        } while (isPositionOnSnake(food.getShape().getPosition(), snake));
+    }
    
 }
 
@@ -23,7 +69,7 @@ void Game::HandleEvents()
     sf::Event event;
     while (window.pollEvent(event))
     {
-        if (event.type == sf::Event::Closed)
+        if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
         {
             window.close();
         }
@@ -60,6 +106,7 @@ void Game::Render()
     window.clear();
     food.Draw(window);
     snake.draw(window);
+    window.draw(scoreText);
     window.display();
 }
 
@@ -73,5 +120,24 @@ void Game::Run()
         Render();
 
     }
+}
+
+
+
+bool Game::isPositionOnSnake(const sf::Vector2f& position, const Snake& snake)
+{
+    if (position == snake.GetHeadPosition())
+    {
+        return true;
+    }
+    for (const auto& bodypos : snake.getBodyPositions())
+    {
+        if (position == bodypos)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 

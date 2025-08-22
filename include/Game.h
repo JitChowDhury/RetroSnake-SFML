@@ -14,6 +14,11 @@ private:
 	sf::Clock clock;
 	float deltaTime;
 	Food food;
+	sf::Font font;
+	sf::Text scoreText;
+	int score;
+	int retries ;
+	const int maxRetry;
 
 
 	void Update();
@@ -22,4 +27,5 @@ private:
 public:
 	Game();
 	void Run();
+	bool isPositionOnSnake(const sf::Vector2f& position, const Snake& snake);
 };

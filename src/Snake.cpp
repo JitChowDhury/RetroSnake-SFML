@@ -3,7 +3,6 @@
 Snake::Snake():stepSize(20.f),moveTime(0.1f),time(0.f), moveDirection(1,0)
 {
 	snakeHead.setSize(sf::Vector2f(20.f, 20.f));
-	snakeHead.setOrigin(10.f, 10.f);
 	position = sf::Vector2f(100.f, 100.f);
 	snakeHead.setPosition(position);
 	snakeHead.setFillColor(sf::Color::Green);
@@ -11,7 +10,7 @@ Snake::Snake():stepSize(20.f),moveTime(0.1f),time(0.f), moveDirection(1,0)
 	sf::RectangleShape bodySegment;
 	bodySegment.setSize(sf::Vector2f(20.f, 20.f));
 	bodySegment.setFillColor(sf::Color::White);
-	bodySegment.setOrigin(10.f, 10.f);
+
 	bodySegment.setPosition(position - sf::Vector2f(stepSize, 0.f));
 	body.push_back(bodySegment);
 
@@ -71,13 +70,35 @@ void Snake::grow() {
 	sf::RectangleShape newSegment;
 	newSegment.setSize(sf::Vector2f(20.f, 20.f));
 	newSegment.setFillColor(sf::Color::White);
-	newSegment.setOrigin(10.f, 10.f);
 	//newSegment.setOutlineColor(sf::Color::Red);
 	//newSegment.setOutlineThickness(1.f);
 	// Place new segment at the tail's position
 	sf::Vector2f tailPosition = body.empty() ? position - moveDirection * stepSize : body.back().getPosition();
 	newSegment.setPosition(tailPosition);
 	body.push_back(newSegment);
+}
+
+sf::Vector2f Snake::GetHeadPosition() const
+{
+	return snakeHead.getPosition();
+}
+
+const std::vector<sf::Vector2f>& Snake::getBodyPositions() const
+{
+	std::vector<sf::Vector2f> positions;
+	for (auto& segment : body)
+	{
+		positions.push_back(segment.getPosition());
+	}
+	
+
+	return positions;
+
+}
+
+sf::FloatRect Snake::GetGlobalBounds() const
+{
+	return snakeHead.getGlobalBounds();
 }
 
 void Snake::draw(sf::RenderWindow& window) const
