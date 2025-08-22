@@ -9,6 +9,11 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
 
     window.setFramerateLimit(60);
     food.SetRandomPosition(WINDOW_WIDTH, WINDOW_HEIGHT);
+    if (!backgroundTexture.loadFromFile("assets/background.png"))
+    {
+
+    }
+    backgroundSprite.setTexture(backgroundTexture);
     
  
 
@@ -20,7 +25,7 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
             food.SetRandomPosition(200.f, 200.f);
             break;
         }
-    } while (isPositionOnSnake(food.getShape().getPosition(), snake));
+    } while (isPositionOnSnake(food.getSprite().getPosition(), snake));
 
     if (!font.loadFromFile("assets/Fonts/arial.ttf"))
     {
@@ -59,7 +64,7 @@ void Game::Update()
                 food.SetRandomPosition(200.f, 200.f); // Fallback
                 break;
             }
-        } while (isPositionOnSnake(food.getShape().getPosition(), snake));
+        } while (isPositionOnSnake(food.getSprite().getPosition(), snake));
     }
    
 }
@@ -104,6 +109,7 @@ void Game::Render()
 {
 
     window.clear();
+    window.draw(backgroundSprite);
     food.Draw(window);
     snake.draw(window);
     window.draw(scoreText);

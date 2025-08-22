@@ -4,10 +4,19 @@
 
 Food::Food()
 {
-	foodShape.setRadius(10.f);
-	foodShape.setFillColor(sf::Color::Red);
+	//foodShape.setRadius(10.f);
+	//foodShape.setFillColor(sf::Color::Red);
+	//
+	//foodShape.setPosition(position);
+
+	if (!appleTexture.loadFromFile("assets/apple.png"))
+	{
+		
+	}
+	appleSprite.setTexture(appleTexture);
 	position = sf::Vector2f(200.f, 100.f);
-	foodShape.setPosition(position);
+	appleSprite.setPosition(position);
+	appleSprite.setScale(0.5f, 0.5f);
 
 }
 
@@ -17,19 +26,19 @@ void Food::SetRandomPosition(float windowWidth, float windowHeight)
 	int posX = (rand() % ((int)windowWidth / 20)) * 20; 
 	int posY = (rand() % ((int)windowHeight / 20)) * 20;
 
-	foodShape.setPosition(sf::Vector2f(posX, posY));
+	appleSprite.setPosition(sf::Vector2f(posX, posY));
 }
 
 void Food::Draw(sf::RenderWindow& window) const
 {
-	window.draw(foodShape);
+	window.draw(appleSprite);
 }
 
-sf::CircleShape Food::getShape() const
+sf::Sprite Food::getSprite() const
 {
-	return foodShape;
+	return appleSprite;
 }
 sf::FloatRect Food::GetGlobalBounds() const
 {
-	return foodShape.getGlobalBounds();
+	return appleSprite.getGlobalBounds();
 }

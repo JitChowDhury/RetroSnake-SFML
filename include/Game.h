@@ -19,6 +19,8 @@ private:
 	int score;
 	int retries ;
 	const int maxRetry;
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
 
 
 	void Update();

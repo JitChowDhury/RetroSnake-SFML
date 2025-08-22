@@ -33,19 +33,19 @@ void Snake::Update(float deltaTime, float windowWidth, float windowHeight)
 		}
 		
 		if (snakeHead.getPosition().x > windowWidth) {
-			snakeHead.setPosition(snakeHead.getSize().x / 2, position.y);
+			snakeHead.setPosition(snakeHead.getSize().x, position.y);
 		}
-		else if (position.x <= 0.f)
+		else if (position.x < 0.f)
 		{
-			snakeHead.setPosition(windowWidth - snakeHead.getSize().x / 2, position.y);
+			snakeHead.setPosition(windowWidth - stepSize, position.y);
 		}
 		else if (position.y > windowHeight)
 		{
-			snakeHead.setPosition(position.x, snakeHead.getSize().y / 2);
+			snakeHead.setPosition(position.x, snakeHead.getSize().y);
 		}
-		else if(position.y<=0.f)
+		else if(position.y<0.f)
 		{
-			snakeHead.setPosition(position.x, windowHeight - snakeHead.getSize().y / 2);
+			snakeHead.setPosition(position.x, windowHeight - stepSize);
 		}
 		position = snakeHead.getPosition();
 		time = 0.f;
