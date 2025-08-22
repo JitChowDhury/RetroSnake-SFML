@@ -5,7 +5,7 @@ Snake::Snake():stepSize(20.f),moveTime(0.1f),time(0.f), moveDirection(1,0)
 	snakeHead.setSize(sf::Vector2f(20.f, 20.f));
 	position = sf::Vector2f(100.f, 100.f);
 	snakeHead.setPosition(position);
-	snakeHead.setFillColor(sf::Color::Green);
+	snakeHead.setFillColor(sf::Color(142, 68, 173));
 
 	sf::RectangleShape bodySegment;
 	bodySegment.setSize(sf::Vector2f(20.f, 20.f));

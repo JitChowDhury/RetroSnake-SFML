@@ -14,6 +14,7 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
 
     }
     backgroundSprite.setTexture(backgroundTexture);
+    backgroundSprite.setScale(0.5208f, 0.5859f);
     
  
 
