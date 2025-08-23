@@ -23,7 +23,7 @@ The snake grows as it eats food, but colliding with walls or itself ends the gam
 
 ## 📸 Preview
 
-_screenshot_
+![alt text](readmeAssets/snake.gif)
 
 ---
 
