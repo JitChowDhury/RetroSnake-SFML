@@ -59,7 +59,7 @@ void Snake::Update(float deltaTime, float windowWidth, float windowHeight)
 void Snake::SetDirection(sf::Vector2f direction)
 {
 
-	if (moveDirection.x != -direction.x || moveDirection.y != -direction.y)
+	if (moveDirection.x != -direction.x && moveDirection.y != -direction.y)
 	{
 		moveDirection = direction;
 	}
@@ -83,22 +83,40 @@ sf::Vector2f Snake::GetHeadPosition() const
 	return snakeHead.getPosition();
 }
 
-const std::vector<sf::Vector2f>& Snake::getBodyPositions() const
+std::vector<sf::Vector2f> Snake::getBodyPositions() const
 {
 	std::vector<sf::Vector2f> positions;
-	for (auto& segment : body)
+	for (const auto& segment : body)
 	{
 		positions.push_back(segment.getPosition());
 	}
-	
-
-	return positions;
-
+	return positions; 
 }
 
 sf::FloatRect Snake::GetGlobalBounds() const
 {
 	return snakeHead.getGlobalBounds();
+}
+
+void Snake::snakeReset()
+{
+	snakeHead.setSize(sf::Vector2f(20.f, 20.f));
+	position = sf::Vector2f(100.f, 100.f);
+	snakeHead.setPosition(position);
+	snakeHead.setFillColor(sf::Color(142, 68, 173));
+
+	body.clear();
+
+	sf::RectangleShape bodySegment;
+	bodySegment.setSize(sf::Vector2f(20.f, 20.f));
+	bodySegment.setFillColor(sf::Color::White);
+
+	bodySegment.setPosition(position - sf::Vector2f(stepSize, 0.f));
+	body.push_back(bodySegment);
+	moveDirection = sf::Vector2f(1, 0);
+
+	time = 0.f;
+
 }
 
 void Snake::draw(sf::RenderWindow& window) const

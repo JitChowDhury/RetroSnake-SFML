@@ -89,13 +89,15 @@ void Game::Update()
         mainMusic.stop();
         gameOverText.setString("Game Over!");
     }
-
-    for (const auto& bodyPos : snake.getBodyPositions()) {
-        if (headPos == bodyPos) {
+    
+    sf::FloatRect headBounds = snake.GetGlobalBounds();
+    for (size_t i = 1; i < snake.getBodyPositions().size(); i++) {
+        sf::Vector2f pos = snake.getBodyPositions()[i];
+        sf::FloatRect bodyBounds(pos.x, pos.y, 20.f, 20.f);
+        if (headBounds.intersects(bodyBounds)) {
             isGameover = true;
             gameOverSound.play();
             mainMusic.stop();
-            gameOverText.setString("Game Over!");
             break;
         }
     }
@@ -154,6 +156,20 @@ void Game::HandleEvents()
             if (event.key.code == sf::Keyboard::R)
             {
                 isGameover = false;
+                snake.snakeReset();
+                mainMusic.play();
+                score = 0;
+                scoreText.setString("Score: 0");
+
+                do {
+                    food.SetRandomPosition(WINDOW_WIDTH, WINDOW_HEIGHT);
+                    retries++;
+                    if (retries >= maxRetry)
+                    {
+                        food.SetRandomPosition(200.f, 200.f);
+                        break;
+                    }
+                } while (isPositionOnSnake(food.getSprite().getPosition(), snake));
             }
               
         }

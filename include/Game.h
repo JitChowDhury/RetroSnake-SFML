@@ -4,6 +4,12 @@
 #include "Snake.h"
 #include "Food.h"
 
+enum class GameState {
+	MENU,
+	PLAYING,
+	GAMEOVER
+};
+
 class Game
 {
 private:
@@ -20,11 +26,15 @@ private:
 	int retries ;
 	const int maxRetry;
 	bool isGameover;
+	
+	//GameState currentState;
+
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
 	sf::Text scoreText;
 	sf::Text gameOverText;
 	sf::Music mainMusic;
+	sf::Text menuText;
 
 	sf::SoundBuffer eatBuffer;
 	sf::SoundBuffer gameoverBuffer;

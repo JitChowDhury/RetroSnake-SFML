@@ -19,8 +19,9 @@ public:
 	void draw(sf::RenderWindow& draw) const;
 	void grow();
 	sf::Vector2f GetHeadPosition() const;
-	const std::vector<sf::Vector2f>& getBodyPositions() const;
+	std::vector<sf::Vector2f> getBodyPositions() const;
 	sf::FloatRect GetGlobalBounds() const;
+	void snakeReset();
 
 
 
