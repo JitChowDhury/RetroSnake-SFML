@@ -27,20 +27,24 @@ private:
 	const int maxRetry;
 	bool isGameover;
 	
-	//GameState currentState;
+	GameState currentState;
 
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
 	sf::Text scoreText;
 	sf::Text gameOverText;
+	sf::Text restartText;
 	sf::Music mainMusic;
-	sf::Text menuText;
+	sf::Text startText;
 
 	sf::SoundBuffer eatBuffer;
 	sf::SoundBuffer gameoverBuffer;
 
 	sf::Sound eatSound;
 	sf::Sound gameOverSound;
+
+	sf::RectangleShape startButton;
+	sf::RectangleShape restartButton;
 
 
 	void Update();

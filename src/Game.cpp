@@ -4,9 +4,9 @@
 
 
 
-Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Snake Game"), deltaTime(0.f),score(0),retries(0),maxRetry(100),isGameover(false)
+Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Snake Game"), deltaTime(0.f),score(0),retries(0),maxRetry(100),isGameover(false),currentState(GameState::MENU)
 {
-
+    
     window.setFramerateLimit(60);
     food.SetRandomPosition(WINDOW_WIDTH, WINDOW_HEIGHT);
     if (!backgroundTexture.loadFromFile("assets/background.png"))
@@ -28,7 +28,7 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
         }
     } while (isPositionOnSnake(food.getSprite().getPosition(), snake));
 
-    if (!font.loadFromFile("assets/Fonts/arial.ttf"))
+    if (!font.loadFromFile("assets/Fonts/Planes_ValMore.ttf"))
     {
         std::filesystem::path cwd = std::filesystem::current_path();
         std::cout << "Current working directory: " << cwd << "\n";
@@ -68,9 +68,30 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
     gameOverText.setFont(font);
     gameOverText.setCharacterSize(30);
     gameOverText.setFillColor(sf::Color::Red);
-    gameOverText.setPosition(300.f, 280.f);
+    gameOverText.setPosition(320.f, 280.f);
     gameOverText.setString("Game Over!");
 
+
+    startText.setFont(font);
+    startText.setCharacterSize(30);
+    startText.setFillColor(sf::Color::White);
+    startText.setPosition(370.f, 300.f);
+    startText.setString("Start");
+
+
+    restartText.setFont(font);
+    restartText.setCharacterSize(30);
+    restartText.setFillColor(sf::Color::White);
+    restartText.setPosition(350.f, 380.f);
+    restartText.setString("Restart");
+
+    startButton.setSize(sf::Vector2f(200.f, 80.f));
+    startButton.setPosition(300.f, 280.f);
+    startButton.setFillColor(sf::Color(200, 0, 0));
+
+    restartButton.setSize(sf::Vector2f(200.f, 80.f));
+    restartButton.setPosition(300.f, 360.f);
+    restartButton.setFillColor(sf::Color(200, 0, 0));
 
     
 }
@@ -80,6 +101,8 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
 void Game::Update()
 {
     if (isGameover) return;
+    if (currentState != GameState::PLAYING)return;
+
     deltaTime = clock.restart().asSeconds();
     snake.Update(deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT);
     sf::Vector2f headPos = snake.GetHeadPosition();
@@ -87,6 +110,7 @@ void Game::Update()
         isGameover = true;
         gameOverSound.play();
         mainMusic.stop();
+        currentState = GameState::GAMEOVER;
         gameOverText.setString("Game Over!");
     }
     
@@ -96,6 +120,7 @@ void Game::Update()
         sf::FloatRect bodyBounds(pos.x, pos.y, 20.f, 20.f);
         if (headBounds.intersects(bodyBounds)) {
             isGameover = true;
+            currentState = GameState::GAMEOVER;
             gameOverSound.play();
             mainMusic.stop();
             break;
@@ -130,7 +155,7 @@ void Game::HandleEvents()
         {
             window.close();
         }
-        else if (event.type == sf::Event::KeyPressed)
+        else if (event.type == sf::Event::KeyPressed && currentState == GameState::PLAYING)
         {
             if (event.key.code == sf::Keyboard::W)
             {
@@ -171,7 +196,40 @@ void Game::HandleEvents()
                     }
                 } while (isPositionOnSnake(food.getSprite().getPosition(), snake));
             }
-              
+
+        }
+        else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            if (currentState == GameState::MENU)
+            {
+                sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+                if (startButton.getGlobalBounds().contains(mousePos))
+                {
+                    currentState = GameState::PLAYING;
+                }
+            }
+            else if (currentState == GameState::GAMEOVER) {
+                // Check if Restart button clicked
+                sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+                if (restartButton.getGlobalBounds().contains(mousePos)) {
+                    isGameover = false;
+                    snake.snakeReset();
+                    mainMusic.play();
+                    score = 0;
+                    scoreText.setString("Score: 0");
+
+                    retries = 0;
+                    do {
+                        food.SetRandomPosition(WINDOW_WIDTH, WINDOW_HEIGHT);
+                        retries++;
+                        if (retries >= maxRetry) {
+                            food.SetRandomPosition(200.f, 200.f);
+                            break;
+                        }
+                    } while (isPositionOnSnake(food.getSprite().getPosition(), snake));
+
+                    currentState = GameState::PLAYING;
+                }
+            }
         }
     }
 }
@@ -180,13 +238,30 @@ void Game::Render()
 {
 
     window.clear();
-    window.draw(backgroundSprite);
-    food.Draw(window);
-    snake.draw(window);
-    window.draw(scoreText);
-    if (isGameover) {
-        window.draw(gameOverText);
+    if (currentState == GameState::MENU)
+    {
+        //window.draw(titleText);
+        window.draw(startButton);
+        window.draw(startText);
     }
+    else if (currentState == GameState::PLAYING)
+    {
+        window.draw(backgroundSprite);
+        food.Draw(window);
+        snake.draw(window);
+        window.draw(scoreText);
+    }
+    else if (currentState == GameState::GAMEOVER)
+    {
+        window.draw(backgroundSprite);
+        food.Draw(window);
+        snake.draw(window);
+        window.draw(scoreText);
+        window.draw(gameOverText);
+        window.draw(restartButton);
+        window.draw(restartText);
+    }
+
     window.display();
 }
 
