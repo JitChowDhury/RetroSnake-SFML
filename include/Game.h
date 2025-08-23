@@ -15,12 +15,14 @@ private:
 	float deltaTime;
 	Food food;
 	sf::Font font;
-	sf::Text scoreText;
 	int score;
 	int retries ;
 	const int maxRetry;
+	bool isGameover;
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
+	sf::Text scoreText;
+	sf::Text gameOverText;
 
 
 	void Update();

@@ -4,7 +4,7 @@
 
 
 
-Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Snake Game"), deltaTime(0.f),score(0),retries(0),maxRetry(100)
+Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW_WIDTH, WINDOW_HEIGHT }), "Snake Game"), deltaTime(0.f),score(0),retries(0),maxRetry(100),isGameover(false)
 {
 
     window.setFramerateLimit(60);
@@ -42,6 +42,12 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
     scoreText.setPosition(10.f, 10.f);
     scoreText.setString("Score: 0");
 
+    gameOverText.setFont(font);
+    gameOverText.setCharacterSize(30);
+    gameOverText.setFillColor(sf::Color::White);
+    gameOverText.setPosition(300.f, 280.f);
+    gameOverText.setString("Game Over!");
+
 
     
 }
@@ -50,8 +56,23 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
 
 void Game::Update()
 {
+    if (isGameover) return;
     deltaTime = clock.restart().asSeconds();
     snake.Update(deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT);
+    sf::Vector2f headPos = snake.GetHeadPosition();
+    if (headPos.x < 0.f || headPos.x >= 800.f || headPos.y < 0.f || headPos.y >= 600.f) {
+        isGameover = true;
+        gameOverText.setString("Game Over!");
+    }
+
+    for (const auto& bodyPos : snake.getBodyPositions()) {
+        if (headPos == bodyPos) {
+            isGameover = true;
+            gameOverText.setString("Game Over!");
+            break;
+        }
+    }
+
     if (snake.GetGlobalBounds().intersects(food.GetGlobalBounds()))
     {
         snake.grow();
@@ -102,6 +123,11 @@ void Game::HandleEvents()
             {
                 snake.grow();
             }
+            if (event.key.code == sf::Keyboard::R)
+            {
+                isGameover = false;
+            }
+              
         }
     }
 }
@@ -114,6 +140,9 @@ void Game::Render()
     food.Draw(window);
     snake.draw(window);
     window.draw(scoreText);
+    if (isGameover) {
+        window.draw(gameOverText);
+    }
     window.display();
 }
 
