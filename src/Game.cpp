@@ -36,6 +36,29 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
         
 
     }
+    if (!mainMusic.openFromFile("assets/bgm.wav"))
+    {
+        std::cout << "Error loading music file!\n";
+    }
+
+    if (!eatBuffer.loadFromFile("assets/food.wav"))
+    {
+        std::cout << "food sound failed to load!" << std::endl;
+    }
+
+    if (!gameoverBuffer.loadFromFile("assets/gameover.wav"))
+    {
+        std::cout << "gameover sound failed to load!" << std::endl;
+
+    }
+
+    eatSound.setBuffer(eatBuffer);
+    gameOverSound.setBuffer(gameoverBuffer);
+
+    mainMusic.setLoop(true);
+    mainMusic.setVolume(10.f);
+    mainMusic.play();
+
     scoreText.setFont(font);
     scoreText.setCharacterSize(24);
     scoreText.setFillColor(sf::Color::White);
@@ -44,7 +67,7 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
 
     gameOverText.setFont(font);
     gameOverText.setCharacterSize(30);
-    gameOverText.setFillColor(sf::Color::White);
+    gameOverText.setFillColor(sf::Color::Red);
     gameOverText.setPosition(300.f, 280.f);
     gameOverText.setString("Game Over!");
 
@@ -62,12 +85,16 @@ void Game::Update()
     sf::Vector2f headPos = snake.GetHeadPosition();
     if (headPos.x < 0.f || headPos.x >= 800.f || headPos.y < 0.f || headPos.y >= 600.f) {
         isGameover = true;
+        gameOverSound.play();
+        mainMusic.stop();
         gameOverText.setString("Game Over!");
     }
 
     for (const auto& bodyPos : snake.getBodyPositions()) {
         if (headPos == bodyPos) {
             isGameover = true;
+            gameOverSound.play();
+            mainMusic.stop();
             gameOverText.setString("Game Over!");
             break;
         }
@@ -76,6 +103,7 @@ void Game::Update()
     if (snake.GetGlobalBounds().intersects(food.GetGlobalBounds()))
     {
         snake.grow();
+        eatSound.play();
         score += 1;
         scoreText.setString("Score: " + std::to_string(score));
         retries = 0;

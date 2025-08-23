@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFMl/Audio.hpp>
 #include "Snake.h"
 #include "Food.h"
 
@@ -23,6 +24,13 @@ private:
 	sf::Sprite backgroundSprite;
 	sf::Text scoreText;
 	sf::Text gameOverText;
+	sf::Music mainMusic;
+
+	sf::SoundBuffer eatBuffer;
+	sf::SoundBuffer gameoverBuffer;
+
+	sf::Sound eatSound;
+	sf::Sound gameOverSound;
 
 
 	void Update();
