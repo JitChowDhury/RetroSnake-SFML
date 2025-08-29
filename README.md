@@ -1,3 +1,5 @@
+![GitHub all releases](https://img.shields.io/github/downloads/JitChowDhury/RetroSnake-SFML/total)
+
 # 🐍 Snake Game (C++ & SFML)
 
 ![C++](https://img.shields.io/badge/C%2B%2B-17-blue.svg?logo=c%2B%2B&logoColor=white)

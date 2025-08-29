@@ -85,6 +85,27 @@ Game::Game():WINDOW_WIDTH{800},WINDOW_HEIGHT{600}, window(sf::VideoMode({ WINDOW
     restartText.setPosition(350.f, 380.f);
     restartText.setString("Restart");
 
+
+    fpsText.setFont(font);
+    fpsText.setCharacterSize(18);
+    fpsText.setFillColor(sf::Color::Yellow);
+    fpsText.setPosition(WINDOW_WIDTH - 100.f, 10.f); 
+    fpsText.setString("FPS: 0");
+
+    titleText.setFont(font);
+    titleText.setCharacterSize(70);
+    titleText.setString("SNAKEEE");
+
+    // Get bounding box of the text
+    sf::FloatRect textBounds = titleText.getLocalBounds();
+
+    // Set origin to the center of the text
+    titleText.setOrigin(textBounds.left + textBounds.width / 2.f,
+        textBounds.top + textBounds.height / 2.f);
+
+    // Position it at the middle top (centered horizontally, y=50 for some spacing)
+    titleText.setPosition(WINDOW_WIDTH / 2.f, 90.f);
+
     startButton.setSize(sf::Vector2f(200.f, 80.f));
     startButton.setPosition(300.f, 280.f);
     startButton.setFillColor(sf::Color(200, 0, 0));
@@ -113,7 +134,7 @@ void Game::Update()
         currentState = GameState::GAMEOVER;
         gameOverText.setString("Game Over!");
     }
-    
+
     sf::FloatRect headBounds = snake.GetGlobalBounds();
     for (size_t i = 1; i < snake.getBodyPositions().size(); i++) {
         sf::Vector2f pos = snake.getBodyPositions()[i];
@@ -143,7 +164,18 @@ void Game::Update()
             }
         } while (isPositionOnSnake(food.getSprite().getPosition(), snake));
     }
-   
+    if (deltaTime > 0.f) {
+        int fps = static_cast<int>(1.f / deltaTime);
+
+        // Update only once per second
+        if (fpsClock.getElapsedTime().asSeconds() >= 1.f) {
+            currentFps = fps;
+            fpsText.setString("FPS: " + std::to_string(currentFps));
+            fpsClock.restart();
+        }
+
+
+    }
 }
 
 void Game::HandleEvents()
@@ -240,7 +272,7 @@ void Game::Render()
     window.clear();
     if (currentState == GameState::MENU)
     {
-        //window.draw(titleText);
+        window.draw(titleText);
         window.draw(startButton);
         window.draw(startText);
     }
@@ -250,6 +282,7 @@ void Game::Render()
         food.Draw(window);
         snake.draw(window);
         window.draw(scoreText);
+        window.draw(fpsText);
     }
     else if (currentState == GameState::GAMEOVER)
     {

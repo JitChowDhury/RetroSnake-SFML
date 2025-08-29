@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <SFMl/Audio.hpp>
+#include <SFML/Audio.hpp>
 #include "Snake.h"
 #include "Food.h"
 
@@ -26,6 +26,8 @@ private:
 	int retries ;
 	const int maxRetry;
 	bool isGameover;
+	sf::Clock fpsClock;
+	int currentFps;
 	
 	GameState currentState;
 
@@ -34,6 +36,8 @@ private:
 	sf::Text scoreText;
 	sf::Text gameOverText;
 	sf::Text restartText;
+	sf::Text fpsText;
+	sf::Text titleText;
 	sf::Music mainMusic;
 	sf::Text startText;
 
